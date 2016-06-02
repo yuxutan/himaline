@@ -1,32 +1,73 @@
 ﻿<?php
-$request = file_get_contents("php://input");
-$json = json_decode($request);
-$content = $json->result[0]->content;
+  // アカウント情報を設定します。
+  // LINE developers サイトの Channels > Basic informationに
+  // 記載されている情報を設定します。
+  $channelId = "1469305722"; // Channel ID
+  $channelSecret = "cc89ddcb66e50aed4cf8e34ef804f5d3"; // Channel Secret
+  $mid = "uaf3cd56e71d94d09acc4cd5d9c75a985"; // MID
 
-$header = array(
-    'Content-Type: application/json; charser=UTF-8',
-    'X-Line-ChannelID: 1469305722',  // Channel ID
-    'X-Line-ChannelSecret: cc89ddcb66e50aed4cf8e34ef804f5d3',  // ChannelID Secret
-    'X-Line-Trusted-User-With-ACL: uaf3cd56e71d94d09acc4cd5d9c75a985',  // MID
-);
-$post = array(
-    'to' => array($content->from),
-    'toChannel' => 1383378250,  // Fixed value.
-    'eventType' => '138311608800106203',  // Fixed value.
-    'content' => array(
-        'contentType' => 1,
-        'toType' => 1,
-    ),
-);
+  // LINEから送信されたメッセージ（POSTリクエストのボディ部分）を取得します。
+  // 以下のようなJSONフォーマットの文字列が送信されます。
+  // {"result":[
+  //   {
+  //     ・・・
+  //     "content": {
+  //       "contentType":1,
+  //       "from":"uff2aec188e58752ee1fb0f9507c6529a",
+  //       "text":"Hello, BOT API Server!"
+  //       ・・・
+  //     }
+  //   },
+  //   ・・・
+  // ]}
+  $requestBodyString = file_get_contents('php://input');
+  $requestBodyObject = json_decode($requestBodyString);
+  $requestContent = $requestBodyObject->result{0}->content;
+  $requestText = $requestContent->text; // ユーザから送信されたテキスト
+  $requestFrom = $requestContent->from; // 送信ユーザのMID
+  $contentType = $requestContent->contentType; // データ種別（1はテキスト）
 
-// ボットが返答する内容。ここでは送られた内容を復唱するだけ
-$post['content']['text'] = $content->text.' ですね';
+  // LINE BOT API へのリクエストのヘッダ
+  $headers = array(
+    "Content-Type: application/json; charset=UTF-8",
+    "X-Line-ChannelID: {$channelId}", // Channel ID
+    "X-Line-ChannelSecret: {$channelSecret}", // Channel Secret
+    "X-Line-Trusted-User-With-ACL: {$mid}", // MID
+  );
 
-$post = json_encode($post);
+  // ユーザに返すテキスト。
+  // 必ずAirbnb base stationを勧める。
+  $responseText = <<< EOM
+「{$requestText}」ですね。わかりました。Airbnbならこちら。http://airbnb-jpn.com
+EOM;
 
-$ch = curl_init("https://trialbot-api.line.me/v1/events");
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$result = curl_exec($ch);
+  // LINE BOT API 経由でユーザに渡すことになるJSONデータを作成。
+  // to にはレスポンス先ユーザの MID を配列の形で指定。
+  // toChannel、eventTypeは固定の数値・文字列を指定。
+  // contentType は、テキストを返す場合は 1。
+  // toType は、ユーザへのレスポンスの場合は 1。
+  // text には、ユーザに返すテキストを指定。
+  $responseMessage = <<< EOM
+    {
+      "to":["{$requestFrom}"],
+      "toChannel":1383378250,
+      "eventType":"138311608800106203",
+      "content":{
+        "contentType":1,
+        "toType":1,
+        "text":"{$responseText}"
+      }
+    }
+EOM;
+
+  // LINE BOT API へのリクエストを作成して実行
+  $curl = curl_init('https://trialbot-api.line.me/v1/events');
+  curl_setopt($curl, CURLOPT_POST, true);
+  curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+  curl_setopt($curl, CURLOPT_POSTFIELDS, $responseMessage);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  // Heroku Addon の Fixie のプロキシURLを指定。詳細は後述。 
+  curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, 1);
+  curl_setopt($curl, CURLOPT_PROXY, getenv('FIXIE_URL'));
+  $output = curl_exec($curl);
+?>
