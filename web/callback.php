@@ -38,7 +38,7 @@
   // ユーザに返すテキスト。
   // 必ずAirbnb base stationを勧める。
   $responseText = <<< EOM
-「{$requestText}」ね。了解。ヒマかよっ。これでも見とけ！　http://airbnb-jpn.com
+「{$requestText}」hima king ！　http://airbnb-jpn.com
 EOM;
 
   // LINE BOT API 経由でユーザに渡すことになるJSONデータを作成。
