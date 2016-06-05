@@ -154,7 +154,9 @@ function api_post_request($path, $post) {
   curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, 1);
   curl_setopt($curl, CURLOPT_PROXY, getenv('FIXIE_URL'));
   $output = curl_exec($curl);
+  error_log("送信電文Start＝＝＝＝＝＝＝＝");
   error_log($output);
+  error_log("送信電文End＝＝＝＝＝＝＝＝＝");
 }
 
 function api_get_user_profile_request($mid) {
@@ -172,7 +174,9 @@ function api_get_user_profile_request($mid) {
   curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, 1);
   curl_setopt($curl, CURLOPT_PROXY, getenv('FIXIE_URL'));
   $output = curl_exec($curl);
+  error_log("ユーザプロファイル取得Start＝＝＝＝＝＝＝＝");
   error_log($output);
+  error_log("ユーザプロファイル取得End＝＝＝＝＝＝＝＝＝");
 }
 
 function api_get_message_content_request($message_id) {
@@ -190,5 +194,8 @@ function api_get_message_content_request($message_id) {
   curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, 1);
   curl_setopt($curl, CURLOPT_PROXY, getenv('FIXIE_URL'));
   $output = curl_exec($curl);
+  error_log("コンテンツ取得Start＝＝＝＝＝＝＝＝");
+  error_log($output);
+  error_log("コンテンツ取得End＝＝＝＝＝＝＝＝＝");
   file_put_contents("/tmp/{$message_id}", $output);
 }
