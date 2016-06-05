@@ -140,7 +140,8 @@ error_log("==========callback end.====================");
 $url = parse_url(getenv('DATABASE_URL'));
 $dsn = sprintf('pgsql:host=%s;dbname=%s', $url['host'], substr($url['path'], 1));
 $pdo = new PDO($dsn, $url['user'], $url['pass']);
-var_dump($pdo->getAttribute(PDO::ATTR_SERVER_VERSION));
+$Pg_log = $pdo->getAttribute(PDO::ATTR_SERVER_VERSION);
+error_log($Pg_log);
 
 function api_post_request($path, $post) {
   $url = "https://trialbot-api.line.me{$path}";
