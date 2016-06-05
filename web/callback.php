@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
   // アカウント情報を設定します。
   // LINE developers サイトの Channels > Basic informationに
   // 記載されている情報を設定します。
@@ -38,8 +38,7 @@
   // ユーザに返すテキスト。
   // 必ずAirbnb base stationを勧める。
   $responseText = <<< EOM
-「{$requestText}」
-！　http://airbnb-jpn.com
+「{$requestText}」hima kingkingkingです ！　http://airbnb-jpn.com
 EOM;
 
   // LINE BOT API 経由でユーザに渡すことになるJSONデータを作成。
