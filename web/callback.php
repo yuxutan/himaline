@@ -17,9 +17,11 @@ $download_url_for_rich = "https://telegram.org/file/811140058/2/7GzMJk4Ij54/a164
 // メッセージ受信
 $json_string = file_get_contents('php://input');
 $json_object = json_decode($json_string);
-error_log( print_r($json_object));
+$arrString = print_r($json_object, true);
+error_log( $arrString);
 $content = $json_object->result{0}->content;
-error_log( print_r($content));
+$arrString = print_r($content, true);
+error_log( $arrString);
 $text = $content->text;
 $from = $content->from;
 $message_id = $content->id;
