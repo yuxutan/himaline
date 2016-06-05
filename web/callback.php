@@ -154,9 +154,11 @@ function api_post_request($path, $post) {
   curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, 1);
   curl_setopt($curl, CURLOPT_PROXY, getenv('FIXIE_URL'));
   $output = curl_exec($curl);
-  error_log("送信電文Start＝＝＝＝＝＝＝＝");
+
   error_log($output);
-  error_log("送信電文End＝＝＝＝＝＝＝＝＝");
+  error_log("↑output of curl_exec");
+  error_log("↓post");
+  error_log($post);
 }
 
 function api_get_user_profile_request($mid) {
