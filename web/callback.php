@@ -2,9 +2,9 @@
   // アカウント情報を設定します。
   // LINE developers サイトの Channels > Basic informationに
   // 記載されている情報を設定します。
-  $channelId = "1469305722"; // Channel ID
-  $channelSecret = "cc89ddcb66e50aed4cf8e34ef804f5d3"; // Channel Secret
-  $mid = "uaf3cd56e71d94d09acc4cd5d9c75a985"; // MID
+  $channelId = getenv('himaline_Channel_ID'); // Channel ID
+  $channelSecret = getenv('himaline_Channel_Secret'); // Channel Secret
+  $mid = getenv('himaline_MID'); // MID
 
   // LINEから送信されたメッセージ（POSTリクエストのボディ部分）を取得します。
   // 以下のようなJSONフォーマットの文字列が送信されます。
