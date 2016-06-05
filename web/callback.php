@@ -1,5 +1,5 @@
 ﻿﻿<?php
-error_log("callback start.");
+error_log("==========callback start.====================");
 
 // アカウント情報設定
 $channel_id = getenv('himaline_Channel_ID');
@@ -128,7 +128,7 @@ EOM;
 
 api_post_request("/v1/events", $post);
 
-error_log("callback end.");
+error_log("==========callback end.====================");
 
 function api_post_request($path, $post) {
   $url = "https://trialbot-api.line.me{$path}";
