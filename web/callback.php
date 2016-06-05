@@ -144,6 +144,9 @@ function api_post_request($path, $post) {
   curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
   curl_setopt($curl, CURLOPT_POSTFIELDS, $post);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  // Heroku Addon の Fixie のプロキシURLを指定。詳細は後述。 
+  curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, 1);
+  curl_setopt($curl, CURLOPT_PROXY, getenv('FIXIE_URL'));
   $output = curl_exec($curl);
   error_log($output);
 }
@@ -159,6 +162,9 @@ function api_get_user_profile_request($mid) {
   $curl = curl_init($url);
   curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  // Heroku Addon の Fixie のプロキシURLを指定。詳細は後述。 
+  curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, 1);
+  curl_setopt($curl, CURLOPT_PROXY, getenv('FIXIE_URL'));
   $output = curl_exec($curl);
   error_log($output);
 }
@@ -174,6 +180,9 @@ function api_get_message_content_request($message_id) {
   $curl = curl_init($url);
   curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  // Heroku Addon の Fixie のプロキシURLを指定。詳細は後述。 
+  curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, 1);
+  curl_setopt($curl, CURLOPT_PROXY, getenv('FIXIE_URL'));
   $output = curl_exec($curl);
   file_put_contents("/tmp/{$message_id}", $output);
 }
