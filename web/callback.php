@@ -25,6 +25,7 @@ error_log("受信電文End＝＝＝＝＝＝＝＝＝");
 
 $content = $json_object->result{0}->content;
 $text = $content->text;
+$contentType = $content->contentType;
 $from = $content->from;
 $message_id = $content->id;
 $content_type = $content->contentType;
@@ -84,7 +85,7 @@ EOM;
 
 // 受信メッセージに応じて返すメッセージを変更
 $event_type = "138311608800106203";
-if ($text == "image") {
+if ($contentType == "2") {
   $content = $image_content;
 } else if ($text == "video") {
   $content = $video_content;
@@ -155,8 +156,8 @@ function api_post_request($path, $post) {
   curl_setopt($curl, CURLOPT_PROXY, getenv('FIXIE_URL'));
   $output = curl_exec($curl);
 
+  error_log("↓result of curl_exec(post)");
   error_log($output);
-  error_log("↑output of curl_exec");
   error_log("↓post");
   error_log($post);
 }
@@ -176,9 +177,9 @@ function api_get_user_profile_request($mid) {
   curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, 1);
   curl_setopt($curl, CURLOPT_PROXY, getenv('FIXIE_URL'));
   $output = curl_exec($curl);
-  error_log("ユーザプロファイル取得Start＝＝＝＝＝＝＝＝");
+  error_log("ユーザプロファイルStart＝＝＝＝＝＝＝＝");
   error_log($output);
-  error_log("ユーザプロファイル取得End＝＝＝＝＝＝＝＝＝");
+  error_log("ユーザプロファイルEnd＝＝＝＝＝＝＝＝＝");
 }
 
 function api_get_message_content_request($message_id) {
@@ -196,8 +197,8 @@ function api_get_message_content_request($message_id) {
   curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, 1);
   curl_setopt($curl, CURLOPT_PROXY, getenv('FIXIE_URL'));
   $output = curl_exec($curl);
-  error_log("コンテンツ取得Start＝＝＝＝＝＝＝＝");
+  error_log("コンテンツStart＝＝＝＝＝＝＝＝");
   error_log($output);
-  error_log("コンテンツ取得End＝＝＝＝＝＝＝＝＝");
+  error_log("コンテンツEnd＝＝＝＝＝＝＝＝＝");
   file_put_contents("/tmp/{$message_id}", $output);
 }
