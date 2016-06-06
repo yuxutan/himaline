@@ -31,10 +31,10 @@ $message_id = $content->id;
 $content_type = $content->contentType;
 
 // DB接続テスト
-$url = parse_url(getenv('DATABASE_URL'));
-$dsn = sprintf('pgsql:host=%s;dbname=%s', $url['host'], substr($url['path'], 1));
-$pdo = new PDO($dsn, $url['user'], $url['pass']);
-$content = $pdo->query('select * from test_table ;');
+//$url = parse_url(getenv('DATABASE_URL'));
+//$dsn = sprintf('pgsql:host=%s;dbname=%s', $url['host'], substr($url['path'], 1));
+//$pdo = new PDO($dsn, $url['user'], $url['pass']);
+//$content = $pdo->query('select * from test_table ;');
 
 
 // ユーザ情報取得
@@ -168,6 +168,10 @@ function api_post_request($path, $post) {
   curl_setopt($curl, CURLOPT_PROXY, getenv('FIXIE_URL'));
   $output = curl_exec($curl);
 
+  error_log("↓curl_option");
+  error_log($headers);
+  error_log($post);
+  
   error_log("↓result of curl_exec(post)");
   error_log($output);
   error_log("↓post");
