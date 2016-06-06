@@ -169,7 +169,8 @@ function api_post_request($path, $post) {
   $output = curl_exec($curl);
 
   error_log("↓curl_option");
-  error_log($headers);
+  $head = print_r($headers);
+  error_log($head);
   error_log($post);
   
   error_log("↓result of curl_exec(post)");
