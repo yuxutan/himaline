@@ -1,8 +1,9 @@
 {
   "require" : {
+    "predis/predis": "1.0.3",
+    "chrisboulton/php-resque": "1.2"
   },
   "require-dev": {
     "heroku/heroku-buildpack-php": "*"
   }
 }
-
