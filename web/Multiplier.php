@@ -19,6 +19,8 @@ class Multiplier
         sleep(1); // テストのため重い処理っぽい雰囲気を出す
         $result = $x * $y;
         echo "Multiply: x * y = $result" . PHP_EOL;
+        error_log("Multiplier log x * y =" );
+        error_log($result );
     }
 
     public function tearDown()
