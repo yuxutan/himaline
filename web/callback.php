@@ -2,7 +2,7 @@
 error_log("==========callback start.====================");
 
 // enqueue.php
-require 'vendor/autoload.php';
+//require 'vendor/autoload.php';
 
 Resque::setBackend('localhost:6379');
 
